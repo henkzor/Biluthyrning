@@ -31,9 +31,7 @@ namespace Biluthyrning.Models
                 });
             }
 
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = DateTime.Now;
-            TimeSpan ts = t1 - t2;
+            
 
 
             return CIVM;
