@@ -1,0 +1,27 @@
+﻿@model CarRentalReturnVM
+@{
+    ViewData["Title"] = "Return";
+}
+
+<h3>Return</h3>
+
+
+<form asp-controller="CarRental" asp-action="Return">
+
+    <label asp-for="BookingNr"></label>
+    <input asp-for="BookingNr" />
+    <span asp-validation-for="BookingNr"></span>
+
+    <label asp-for="ReturnDate"></label>
+    <input asp-for="ReturnDate" />
+    <span asp-validation-for="ReturnDate"></span>
+
+    <label asp-for="MileageReturnKm"></label>
+    <input asp-for="MileageReturnKm" />
+    <span asp-validation-for="MileageReturnKm"></span>
+
+    <br />
+
+    <input type="submit" value="Return" />
+</form>
+

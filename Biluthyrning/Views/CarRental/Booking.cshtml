@@ -1,0 +1,87 @@
+﻿@model CarRentalBookingVM
+@{
+    ViewData["Title"] = "Booking";
+}
+
+<h3>Booking</h3>
+
+<form asp-controller="CarRental" asp-action="Booking">
+
+    <label asp-for="PersonNr"></label>
+    <input asp-for="PersonNr" />
+    <span asp-validation-for="PersonNr"></span>
+
+    <div id="CustomerInformationInputDiv" style="background-color: aliceblue">
+        <h6>If registering a new customer, please enter details below</h6>
+        <div style="float:left; padding-right:10px;">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+
+    <div style="float:left; padding-right:10px;">
+        <label asp-for="StartDate"></label>
+        <input id="StartDate" asp-for="StartDate" />
+        <span asp-validation-for="StartDate"></span>
+    </div>
+
+    <label asp-for="EndDate"></label>
+    <input id="EndDate" asp-for="EndDate" />
+    <span asp-validation-for="EndDate"></span>
+    <br />
+    <button type="button" id="btnCheckAvailability" onclick="CheckAvailability()">Check availability</button>
+    <select id ="AvailabilityResultsDiv" asp-for="CarId"></select>
+      
+    <br />
+    <br />
+
+    <input type="submit" value="Create" />
+</form>
+
+
+<a href="/CarRental">Back</a>
+
+@section scripts
+{
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    
+    function CheckAvailability()
+    {
+        var startDate = $("#StartDate").val();
+        var endDate = $("#EndDate").val();
+        var data = { StartDate: startDate, EndDate: endDate };
+
+        $.ajax({
+            url: "CheckAvailability",
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                console.log("CheckAvailability-anropet fungerade");
+                console.log(result);
+
+                var html = '';
+
+                for (var i = 0; i < result.length; i++) {
+                    html += '<option value="' + result[i].id + '">' + result[i].cartype
+                        + " " + result[i].regnNr + " " + result[i].mileageKm +  '</option>'; 
+                }
+
+                $("#AvailabilityResultsDiv").html(html);
+                
+
+            }
+        });
+    }
+    
+</script>
+    
+}

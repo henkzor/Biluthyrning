@@ -1,0 +1,35 @@
+﻿@model CarRentalIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Car rental</h3>
+
+<a href="/CarRental/Booking">Create a booking</a>
+<a href="/CarRental/Return">Return a car</a>
+
+
+<h4>Booked cars</h4>
+<ul>
+    @foreach (var item in Model.BookingBoxVMList)
+    {
+        if (!item.IsReturned)
+        {
+            <li><partial name="_BookingBox" model="item" /></li>
+        }
+    }
+</ul>
+
+<h4>Returned cars</h4>
+<ul>
+    @foreach (var item in Model.BookingBoxVMList)
+    {
+        if (item.IsReturned)
+        {
+            <li><partial name="_BookingBox" model="item" /></li>
+        }
+    }
+
+</ul>
+
+

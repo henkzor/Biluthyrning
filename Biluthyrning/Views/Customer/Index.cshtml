@@ -1,0 +1,13 @@
+﻿@model CustomerIndexVM
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h3>Customers</h3>
+<ul>
+@foreach (var item in Model.CustomerBoxVMList)
+{
+    <li><partial name="_CustomerBox" model=item/> </li>
+}
+</ul>
+

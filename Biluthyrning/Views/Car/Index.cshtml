@@ -1,0 +1,15 @@
+﻿@model CarIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Cars</h3>
+
+<a href="/Car/AddCar">Add a new car</a>
+
+<ul>
+    @foreach (var item in Model.CarBoxVMList)
+    {
+        <li><partial name="_CarBox" model=item /> </li>
+    }
+</ul>

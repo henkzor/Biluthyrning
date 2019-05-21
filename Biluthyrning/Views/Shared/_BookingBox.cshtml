@@ -1,0 +1,12 @@
+﻿@model BookingBoxVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<a asp-controller="CarRental" asp-action="ShowBooking" asp-route-id="@Model.BookingNr">
+
+    @Model.BookingStartTime
+    @Model.BookingEndTime
+    @Model.CarType
+    @Model.CarRegNr
+
+</a>

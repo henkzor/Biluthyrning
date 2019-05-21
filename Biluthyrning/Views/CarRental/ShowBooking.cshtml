@@ -1,0 +1,36 @@
+﻿@model CarRentalShowBookingVM
+@{
+    ViewData["Title"] = "ShowBooking";
+}
+
+<h4>Booking details</h4>
+
+<label asp-for="BookingNr"></label>
+@Model.BookingNr
+
+<label asp-for="CustomerPersonNr"></label>
+@Model.CustomerPersonNr
+
+<label asp-for="CarType"></label>
+@Model.CarType
+
+<label asp-for="CarRegNr"></label>
+@Model.CarRegNr
+
+<label asp-for="BookingStartTime"></label>
+@Model.BookingStartTime
+
+<label asp-for="BookingEndTime"></label>
+@Model.BookingEndTime
+
+<label asp-for="MileageBefore"></label>
+@Model.MileageBefore
+
+<label asp-for="MileageAfter"></label>
+@Model.MileageAfter
+
+<label asp-for="Cost"></label>
+@Model.Cost kr
+
+<br />
+<a href="/CarRental">Back to bookings</a>

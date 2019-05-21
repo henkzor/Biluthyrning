@@ -1,0 +1,18 @@
+﻿@model CustomerDetailsVM
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>Customer Details</h3>
+
+@Model.FirstName
+@Model.LastName
+@Model.PersonNr
+
+<h4>Bookings</h4>
+@foreach (var item in Model.BookingBoxVMList)
+{
+    
+    <li><partial name="_BookingBox" model="item" /></li>
+    
+}

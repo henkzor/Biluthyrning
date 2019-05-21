@@ -1,0 +1,9 @@
+﻿@model CustomerBoxVM
+
+<a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.Id">
+
+    @Model.FirstName
+    @Model.LastName
+    @Model.PersonNr
+
+</a>

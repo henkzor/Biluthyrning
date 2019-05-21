@@ -1,0 +1,39 @@
+﻿@model AccountLoginVM
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h3>Login</h3>
+
+@if (TempData["Message"] != null)
+{
+    <p style="color:red">@TempData["Message"]</p>
+}
+
+<form asp-controller="Account" asp-action="Login">
+
+    <label asp-for="FirstName"></label>
+    <input asp-for="FirstName" />
+    <span asp-validation-for="FirstName"></span>
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password"></span>
+
+    <br />
+
+    <input type="submit" value="Login" />
+</form>
+
+<p>Don't have an account? Sign up <a href="/Account/Create">Here</a>!</p>
+
+
+<div asp-validation-summary="All"></div>
+
+@section scripts
+{
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+}
+
+

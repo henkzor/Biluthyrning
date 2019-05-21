@@ -1,0 +1,5 @@
+﻿Scaffold-sträng:
+dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Cata
+log=Biluthyrning;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationInten
+t=ReadWrite;MultiSubnetFailover=False" Microsoft.EntityFrameworkCore.SqlServer --table "Cars" --table "Bookings" --table
+ "Customers" --output-dir "Models/Entities" --context "BiluthyrningDBContext" --force

@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+<body>
+    <header>
+        <a href="/Home">Home</a>
+        <a href="/CarRental/Index">Car rental</a>
+        <a href="/Customer/Index">Customers</a>
+        <a href="/Car/Index">Car</a>
+        <a href="/Account/Login">Login</a>
+        <a href="/Account/Logout">Logout</a>
+    </header>
+    <div>
+
+        <h1>Biluthyrningen</h1>
+        
+
+        @RenderBody()
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

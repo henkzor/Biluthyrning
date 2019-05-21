@@ -1,0 +1,33 @@
+﻿@model CarAddCarVM
+@{
+    ViewData["Title"] = "AddCar";
+}
+
+<h3>AddCar</h3>
+
+<form asp-controller="Car" asp-action="AddCar">
+
+    <label asp-for="Cartype"></label>
+    <select asp-for="Cartype">
+        <option value="Small car">Small car</option>
+        <option value="Van">Van</option>
+        <option value="Minibus">Minibus</option>
+    </select>
+    <span asp-validation-for="Cartype"></span>
+
+    <label asp-for="RegNr"></label>
+    <input asp-for="RegNr" />
+    <span asp-validation-for="RegNr"></span>
+
+    <label asp-for="MileageKm"></label>
+    <input asp-for="MileageKm" />
+    <span asp-validation-for="MileageKm"></span>
+
+    
+    <br />
+
+    <input type="submit" value="Add car" />
+</form>
+
+
+
