@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Biluthyrning.Models.ViewModels.Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Biluthyrning.Models.ViewModels
         public string PersonNr { get; set; }
 
         public List<BookingBoxVM> BookingBoxVMList { get; set; }
+
+        public List<EventBoxVM> EventBoxVMList { get; set; }
 
         public int Id { get; set; }
 

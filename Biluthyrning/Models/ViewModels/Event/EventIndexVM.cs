@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Biluthyrning.Models.ViewModels
+namespace Biluthyrning.Models.ViewModels.Event
 {
-    public class CustomerIndexVM
+    public class EventIndexVM
     {
-        public List<CustomerBoxVM> CustomerBoxVMList{ get; set; }
 
+        public List<EventBoxVM> EventBoxVMList { get; set; }
 
     }
 }

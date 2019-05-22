@@ -1,0 +1,15 @@
+﻿@model EventBoxVM
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@Model.EventId
+@Model.EventType
+@Model.Date
+@Model.CarId
+
+@if (Model.EventType == "Created Booking" || Model.EventType == "Returned Car")
+{
+    @Model.BookingId
+    @Model.CustomerId
+}

@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Biluthyrning.Models.ViewModels.Shared;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Biluthyrning.Models.Entities
+namespace Biluthyrning.Models.ViewModels.Car
 {
-    public partial class Cars
+    public class CarDetailsVM
     {
-        public int Id { get; set; }
+        public int CarId { get; set; }
         public string Cartype { get; set; }
         public string RegnNr { get; set; }
         public int MileageKm { get; set; }
@@ -14,5 +18,8 @@ namespace Biluthyrning.Models.Entities
         public bool FlaggedForRemoval { get; set; }
         public int BookingsSinceService { get; set; }
         public bool Active { get; set; }
+        public List<BookingBoxVM> BookingBoxVMList { get; set; }
+
+        public List<EventBoxVM> EventBoxVMList { get; set; }
     }
 }

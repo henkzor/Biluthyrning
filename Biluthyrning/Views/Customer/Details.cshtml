@@ -12,7 +12,16 @@
 <h4>Bookings</h4>
 @foreach (var item in Model.BookingBoxVMList)
 {
-    
+
     <li><partial name="_BookingBox" model="item" /></li>
-    
+
+}
+
+
+<h4>Events</h4>
+@foreach (var item in Model.EventBoxVMList)
+{
+
+    <li><partial name="_EventBox" model="item" /></li>
+
 }

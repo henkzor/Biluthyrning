@@ -28,8 +28,8 @@ namespace Biluthyrning.Models
             car.FlaggedForService = false;
             car.FlaggedForRemoval = false;
             car.BookingsSinceService = 0;
+            car.Active = true;
             
-
             context.Cars.Add(car);
             context.SaveChanges();
         }
@@ -40,6 +40,7 @@ namespace Biluthyrning.Models
             CIVM.CarBoxVMList = new List<CarBoxVM>();
 
             CIVM.CarBoxVMList.AddRange(context.Cars
+                .Where(c => c.Active)
                 .Select(c => new CarBoxVM
                 {
                     Id = c.Id,
@@ -53,6 +54,8 @@ namespace Biluthyrning.Models
 
             return CIVM;
         }
+
+        
 
         public List<CarBoxVM> GetCarsByID(List<int> CarIDs)
         {
@@ -79,6 +82,13 @@ namespace Biluthyrning.Models
                 .FirstOrDefault();
 
             carToClean.FlaggedForCleaning = false;
+
+            context.Events.Add(new Events
+            {
+                CarId = CPAVM.CarId,
+                Date = DateTime.Now,
+                EventType = "Cleaning"
+            });
             context.SaveChanges();
         }
 
@@ -90,27 +100,40 @@ namespace Biluthyrning.Models
                 .FirstOrDefault();
 
             carToClean.FlaggedForService= false;
+
+            context.Events.Add(new Events
+            {
+                CarId = CPAVM.CarId,
+                Date = DateTime.Now,
+                EventType = "Service"
+            });
+
             context.SaveChanges();
         }
         public void RemoveCar(CarPerformActionVM CPAVM)
         {
-            //context.Cars.Remove(c => c)
-            //    .Where(c => c.Id == CPAVM.CarId)
-            //    .FirstOrDefault();
+            //Lös detta genom att sätta bilen till en "retired"
+            //context.Cars.Remove(
+            //        context.Cars
+            //        .Select(c => c)
+            //        .Where(c => c.Id == CPAVM.CarId)
+            //        .FirstOrDefault()
+            //    );
 
-            context.Cars.Remove(
-                    context.Cars
-                    .Select(c => c)
-                    .Where(c => c.Id == CPAVM.CarId)
-                    .FirstOrDefault()
-                );
+            Cars carToRetire = context.Cars
+                .Select(c => c)
+                .Where(c => c.Id == CPAVM.CarId)
+                .FirstOrDefault();
 
-            //Cars carToClean = context.Cars
-            //    .Select(c => c)
-            //    .Where(c => c.Id == CPAVM.CarId)
-            //    .FirstOrDefault();
+            carToRetire.Active = false;
 
-            //carToClean.FlaggedForRemoval = false;
+            context.Events.Add(new Events
+            {
+                CarId = CPAVM.CarId,
+                Date = DateTime.Now,
+                EventType = "Removal"
+            });
+
             context.SaveChanges();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Biluthyrning.Models.Entities;
 using Biluthyrning.Models.ViewModels;
+using Biluthyrning.Models.ViewModels.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,9 +32,6 @@ namespace Biluthyrning.Models
                 });
             }
 
-            
-
-
             return CIVM;
         }
 
@@ -41,6 +39,7 @@ namespace Biluthyrning.Models
         {
             CustomerDetailsVM CDVM = new CustomerDetailsVM();
             CDVM.BookingBoxVMList = new List<BookingBoxVM>();
+            CDVM.EventBoxVMList = new List<EventBoxVM>();
 
             CDVM.FirstName = context.Customers
                 .Where(c => c.Id == id)
@@ -76,6 +75,28 @@ namespace Biluthyrning.Models
                         .FirstOrDefault(),
                         IsReturned = item.IsReturned
                     });
+                }
+            }
+
+            foreach (var item in context.Events)
+            {
+                if (item.CustomerId == id)
+                {
+                    EventBoxVM EBVM = new EventBoxVM();
+
+                    if (item.EventType == "Created Booking" || item.EventType == "Returned Car")
+                    {
+                        EBVM.BookingId = item.BookingId;
+                        EBVM.CustomerId = item.CustomerId;
+                    }
+
+                    EBVM.EventId = item.Id;
+                    EBVM.CarId = item.CarId;
+                    EBVM.EventType = item.EventType;
+                    EBVM.Date = item.Date;
+
+                    CDVM.EventBoxVMList.Add(EBVM);
+
                 }
             }
 

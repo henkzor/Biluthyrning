@@ -3,12 +3,17 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @*@if (Model.FlaggedForRemoval)
-{
-    <p>Flagged for removal</p>
-}*@
-@Model.Cartype
-@Model.RegnNr
-@Model.MileageKm
+    {
+        <p>Flagged for removal</p>
+    }*@
+
+<a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id">
+    @Model.Cartype
+    @Model.RegnNr
+    @Model.MileageKm
+    
+</a>
+
 @if (Model.FlaggedForCleaning)
 {
     <button onclick="CleanCar(@Model.Id)">Clean</button>

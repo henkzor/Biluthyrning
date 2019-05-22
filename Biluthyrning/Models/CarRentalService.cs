@@ -80,8 +80,16 @@ namespace Biluthyrning.Models
                 .FirstOrDefault();
             booking.IsReturned = false;
             
-
             context.Bookings.Add(booking);
+            context.Events.Add(new Events
+            {
+                BookingId = booking.BookingNr,
+                CarId = booking.CarId,
+                CustomerId = booking.CustomerId,
+                EventType = "Created Booking",
+                Date = DateTime.Now
+            });
+
             context.SaveChanges();
 
             return booking.BookingNr;
@@ -205,6 +213,14 @@ namespace Biluthyrning.Models
             booking.IsReturned = true;
 
             context.Bookings.Update(booking);
+            context.Events.Add(new Events
+            {
+                BookingId = booking.Id,
+                CarId = booking.CarId,
+                CustomerId = booking.CustomerId,
+                EventType = "Returned Car",
+                Date = DateTime.Now
+            });
             context.SaveChanges();
                     
         }
@@ -216,6 +232,7 @@ namespace Biluthyrning.Models
             //List<int> AvailibleCarsList = new List<int>();
 
             CarBoxVMList.AddRange(context.Cars
+               .Where( c => c.Active)
                .Select(c => new CarBoxVM
                {
                    Cartype = c.Cartype,

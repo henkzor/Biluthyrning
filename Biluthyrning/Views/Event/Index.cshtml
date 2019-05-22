@@ -1,7 +1,12 @@
-﻿
+﻿@model EventIndexVM
 @{
     ViewData["Title"] = "Index";
 }
 
-<h3>Index</h3>
-
+<h3>Events</h3>
+<ul>
+    @foreach (var item in Model.EventBoxVMList)
+    {
+        <li><partial name="_EventBox" model=item /> </li>
+    }
+</ul>
