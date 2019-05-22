@@ -160,6 +160,18 @@ namespace Biluthyrning.Models
             booking.MileageAfterKm = CRRVM.MileageReturnKm;
             booking.ReturnDate = CRRVM.ReturnDate;
 
+
+            Cars bookingCar = context.Cars
+                .Where(c => c.Id == booking.CarId)
+                .Select(c => c)
+                .FirstOrDefault();
+
+            bookingCar.FlaggedForCleaning = true;
+            bookingCar.BookingsSinceService++;
+            bookingCar.FlaggedForService = (bookingCar.BookingsSinceService % 3 == 0);
+            bookingCar.MileageKm = (int)booking.MileageAfterKm;
+            bookingCar.FlaggedForRemoval = (bookingCar.MileageKm > 15000);
+
             decimal? cost = 0;
             int baseDayRental = 500;
             int kmPrice = 2;
@@ -220,6 +232,7 @@ namespace Biluthyrning.Models
                         .Select(c => c)
                         .Where(c => c.Id == booking.CarId)
                         .FirstOrDefault());
+
                     //UnAvailibleCarsList.Add(booking.CarId);
                     //if (AvailibleCarsList.Contains(booking.CarId))
                     //{

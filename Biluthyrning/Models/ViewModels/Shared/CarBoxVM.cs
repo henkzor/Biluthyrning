@@ -20,5 +20,14 @@ namespace Biluthyrning.Models.ViewModels.Shared
         [Display(Name = "Car Id")]
         public int Id { get; set; }
 
+        [Display(Name = "Flagged for cleaning")]
+        public bool FlaggedForCleaning { get; set; }
+
+        [Display(Name = "Flagged for service")]
+        public bool FlaggedForService { get; set; }
+
+        [Display(Name = "Flagged for removal")]
+        public bool FlaggedForRemoval { get; set; }
+
     }
 }

@@ -2,6 +2,19 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@*@if (Model.FlaggedForRemoval)
+{
+    <p>Flagged for removal</p>
+}*@
 @Model.Cartype
 @Model.RegnNr
 @Model.MileageKm
+@if (Model.FlaggedForCleaning)
+{
+    <button onclick="CleanCar(@Model.Id)">Clean</button>
+}
+@if (Model.FlaggedForService)
+{
+    <button onclick="ServiceCar(@Model.Id)">Service</button>
+}
+<button onclick="RemoveCar(@Model.Id)">Remove Car</button>

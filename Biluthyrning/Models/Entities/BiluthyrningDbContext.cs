@@ -18,6 +18,7 @@ namespace Biluthyrning.Models.Entities
         public virtual DbSet<Bookings> Bookings { get; set; }
         public virtual DbSet<Cars> Cars { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
+        public virtual DbSet<Events> Events { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -87,6 +88,26 @@ namespace Biluthyrning.Models.Entities
                     .IsUnicode(false);
 
                 entity.Property(e => e.PersonNr)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Events>(entity =>
+            {
+                entity.ToTable("Events", "buh");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.BookingId).HasColumnName("BookingID");
+
+                entity.Property(e => e.CarId).HasColumnName("CarID");
+
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.EventType)
                     .IsRequired()
                     .HasMaxLength(32)
                     .IsUnicode(false);

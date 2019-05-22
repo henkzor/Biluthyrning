@@ -24,6 +24,11 @@ namespace Biluthyrning.Models
             car.Cartype = CACVM.Cartype;
             car.MileageKm = CACVM.MileageKm;
             car.RegnNr = CACVM.RegNr;
+            car.FlaggedForCleaning = false;
+            car.FlaggedForService = false;
+            car.FlaggedForRemoval = false;
+            car.BookingsSinceService = 0;
+            
 
             context.Cars.Add(car);
             context.SaveChanges();
@@ -37,9 +42,13 @@ namespace Biluthyrning.Models
             CIVM.CarBoxVMList.AddRange(context.Cars
                 .Select(c => new CarBoxVM
                 {
+                    Id = c.Id,
                     Cartype = c.Cartype,
                     RegnNr = c.RegnNr,
-                    MileageKm = c.MileageKm
+                    MileageKm = c.MileageKm,
+                    FlaggedForCleaning = c.FlaggedForCleaning,
+                    FlaggedForService = c.FlaggedForService,
+                    FlaggedForRemoval = c.FlaggedForRemoval   
                 }));
 
             return CIVM;
@@ -60,6 +69,49 @@ namespace Biluthyrning.Models
                }));
 
             return CarBoxVMList;
+        }
+
+        public void CleanCar (CarPerformActionVM CPAVM)
+        {
+            Cars carToClean = context.Cars
+                .Select(c => c)
+                .Where(c => c.Id == CPAVM.CarId)
+                .FirstOrDefault();
+
+            carToClean.FlaggedForCleaning = false;
+            context.SaveChanges();
+        }
+
+        public void ServiceCar(CarPerformActionVM CPAVM)
+        {
+            Cars carToClean = context.Cars
+                .Select(c => c)
+                .Where(c => c.Id == CPAVM.CarId)
+                .FirstOrDefault();
+
+            carToClean.FlaggedForService= false;
+            context.SaveChanges();
+        }
+        public void RemoveCar(CarPerformActionVM CPAVM)
+        {
+            //context.Cars.Remove(c => c)
+            //    .Where(c => c.Id == CPAVM.CarId)
+            //    .FirstOrDefault();
+
+            context.Cars.Remove(
+                    context.Cars
+                    .Select(c => c)
+                    .Where(c => c.Id == CPAVM.CarId)
+                    .FirstOrDefault()
+                );
+
+            //Cars carToClean = context.Cars
+            //    .Select(c => c)
+            //    .Where(c => c.Id == CPAVM.CarId)
+            //    .FirstOrDefault();
+
+            //carToClean.FlaggedForRemoval = false;
+            context.SaveChanges();
         }
     }
 }

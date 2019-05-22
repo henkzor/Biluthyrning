@@ -13,3 +13,69 @@
         <li><partial name="_CarBox" model=item /> </li>
     }
 </ul>
+
+
+@section scripts
+{
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+
+        function CleanCar(CarId)
+        {
+            var data = { CarId: CarId };
+            $.ajax({
+                url: "CleanCar",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("Clean-anropet fungerade");
+                    console.log(result);
+
+                    location.reload();
+                    //Ta bort clean-knappen
+                }
+            });
+        }
+        function ServiceCar(CarId)
+        {
+            var data = { CarId: CarId };
+            $.ajax({
+                url: "ServiceCar",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("Service-anropet fungerade");
+                    console.log(result);
+
+                    location.reload();
+
+                    //Ta bort clean-knappen
+                }
+            });
+        }
+        function RemoveCar(CarId)
+        {
+            var data = { CarId: CarId };
+            $.ajax({
+                url: "RemoveCar",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("Remove-anropet fungerade");
+                    console.log(result);
+
+                    location.reload();
+                    //Ta bort clean-knappen
+                }
+            });
+        }
+    </script>
+}

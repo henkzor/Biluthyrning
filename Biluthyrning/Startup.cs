@@ -52,6 +52,7 @@ namespace Biluthyrning
             services.AddTransient<CarRentalService>();
             services.AddTransient<CustomerService>();
             services.AddTransient<CarService>();
+            services.AddTransient<EventService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
