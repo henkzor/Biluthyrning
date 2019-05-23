@@ -30,6 +30,13 @@ namespace Biluthyrning.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+
+            return View(service.GetCarByID(id));
+        }
+
 
         [HttpPost]
         public IActionResult AddCar(CarAddCarVM CACVM)
@@ -43,19 +50,19 @@ namespace Biluthyrning.Controllers
         public IActionResult CleanCar([FromBody]CarPerformActionVM data)
         {
             service.CleanCar(data);
-            return Json(null); // Gör detta utan att redirecta?
+            return Json(null); 
         }
 
         public IActionResult ServiceCar([FromBody]CarPerformActionVM data)
         {
             service.ServiceCar(data);
-            return Json(null); // Gör detta utan att redirecta?
+            return Json(null);
         }
 
         public IActionResult RemoveCar([FromBody]CarPerformActionVM data)
         {
             service.RemoveCar(data);
-            return Json(null); // Gör detta utan att redirecta?
+            return Json(null); 
         }
     }
 }

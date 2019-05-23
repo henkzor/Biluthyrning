@@ -9,5 +9,8 @@ namespace Biluthyrning.Models.Entities
         public string PersonNr { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public int NrOfBookings { get; set; }
+        public int TotalKmDriven { get; set; }
+        public int BonusLevel { get; set; }
     }
 }

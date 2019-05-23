@@ -1,4 +1,5 @@
 ﻿using Biluthyrning.Models.Entities;
+using Biluthyrning.Models.ViewModels;
 using Biluthyrning.Models.ViewModels.Car;
 using Biluthyrning.Models.ViewModels.Shared;
 using System;
@@ -55,24 +56,80 @@ namespace Biluthyrning.Models
             return CIVM;
         }
 
-        
-
-        public List<CarBoxVM> GetCarsByID(List<int> CarIDs)
+        public CarDetailsVM GetCarByID(int id)
         {
+            CarDetailsVM CDVM = new CarDetailsVM();
+            CDVM.BookingBoxVMList = new List<BookingBoxVM>();
+            CDVM.EventBoxVMList = new List<EventBoxVM>();
 
-            List<CarBoxVM> CarBoxVMList = new List<CarBoxVM>();
+            CDVM.Car = context.Cars
+                .Where(c => c.Id == id)
+                .Select(c => c)
+                .FirstOrDefault();
 
-            CarBoxVMList.AddRange(context.Cars
-               .Where(c => CarIDs.Contains(c.Id))
-               .Select(c => new CarBoxVM
-               {
-                   Cartype = c.Cartype,
-                   RegnNr = c.RegnNr,
-                   MileageKm = c.MileageKm
-               }));
+            foreach (var item in context.Bookings)
+            {
+                if (item.CarId == id)
+                {
+                    CDVM.BookingBoxVMList.Add(new BookingBoxVM
+                    {
+                        BookingNr = item.BookingNr,
+                        BookingStartTime = item.BookingStart,
+                        BookingEndTime = item.BookingEnd,
+                        CarType = context.Cars
+                            .Where(c => c.Id == item.CarId)
+                            .Select(c => c.Cartype)
+                            .FirstOrDefault(),
+                        CarRegNr = context.Cars
+                            .Where(c => c.Id == item.CarId)
+                            .Select(c => c.RegnNr)
+                            .FirstOrDefault(),
+                        IsReturned = item.IsReturned
+                        
+                    });
+                }
+            }
 
-            return CarBoxVMList;
+            foreach (var item in context.Events)
+            {
+                if (item.CarId == id)
+                {
+                    EventBoxVM EBVM = new EventBoxVM();
+
+                    if (item.EventType == "Created Booking" || item.EventType == "Returned Car")
+                    {
+                        EBVM.BookingId = item.BookingId;
+                        EBVM.CustomerId = item.CustomerId;
+                    }
+
+                    EBVM.EventId = item.Id;
+                    EBVM.CarId = item.CarId;
+                    EBVM.EventType = item.EventType;
+                    EBVM.Date = item.Date;
+
+                    CDVM.EventBoxVMList.Add(EBVM);
+
+                }
+            }
+            return CDVM;
         }
+
+        //public List<CarBoxVM> GetCarsByID(List<int> CarIDs)
+        //{
+
+        //    List<CarBoxVM> CarBoxVMList = new List<CarBoxVM>();
+
+        //    CarBoxVMList.AddRange(context.Cars
+        //       .Where(c => CarIDs.Contains(c.Id))
+        //       .Select(c => new CarBoxVM
+        //       {
+        //           Cartype = c.Cartype,
+        //           RegnNr = c.RegnNr,
+        //           MileageKm = c.MileageKm
+        //       }));
+
+        //    return CarBoxVMList;
+        //}
 
         public void CleanCar (CarPerformActionVM CPAVM)
         {
@@ -112,14 +169,7 @@ namespace Biluthyrning.Models
         }
         public void RemoveCar(CarPerformActionVM CPAVM)
         {
-            //Lös detta genom att sätta bilen till en "retired"
-            //context.Cars.Remove(
-            //        context.Cars
-            //        .Select(c => c)
-            //        .Where(c => c.Id == CPAVM.CarId)
-            //        .FirstOrDefault()
-            //    );
-
+            
             Cars carToRetire = context.Cars
                 .Select(c => c)
                 .Where(c => c.Id == CPAVM.CarId)

@@ -59,7 +59,9 @@ namespace Biluthyrning.Models
                     {
                         PersonNr = CRBVM.PersonNr,
                         FirstName = CRBVM.FirstName,
-                        LastName = CRBVM.LastName
+                        LastName = CRBVM.LastName,
+                        TotalKmDriven = 0,
+                        NrOfBookings = 0
                     });
                 context.SaveChanges();
             }
@@ -180,11 +182,40 @@ namespace Biluthyrning.Models
             bookingCar.MileageKm = (int)booking.MileageAfterKm;
             bookingCar.FlaggedForRemoval = (bookingCar.MileageKm > 15000);
 
+            Customers customer = context.Customers
+               .Where(c => c.Id == booking.CustomerId)
+               .Select(c => c)
+               .FirstOrDefault();
+
             decimal? cost = 0;
             int baseDayRental = 500;
+            if ( customer.BonusLevel >= 1)
+            {
+                baseDayRental = baseDayRental / 2;
+            }
             int kmPrice = 2;
-            TimeSpan numberOfDays = booking.BookingEnd - booking.BookingStart;
+            int numberOfDays = (booking.BookingEnd - booking.BookingStart).Days;
+            if (customer.BonusLevel >= 2)
+            {
+                if (numberOfDays == 3)
+                {
+                    numberOfDays = 2;
+                }
+                else if (numberOfDays >= 4)
+                {
+                    numberOfDays = numberOfDays - 2;
+                }
+            }
 
+            int KmDrivenThisBooking = ((int)booking.MileageAfterKm - booking.MileageBeforeKm);
+            if (customer.BonusLevel == 3)
+            {
+                KmDrivenThisBooking = KmDrivenThisBooking - 20;
+                if (KmDrivenThisBooking < 0)
+                {
+                    KmDrivenThisBooking = 0;
+                }
+            }
 
             switch (context.Cars
                 .Where(c => c.Id == context.Bookings
@@ -195,22 +226,26 @@ namespace Biluthyrning.Models
                 .FirstOrDefault())
             {
                 case "Small Car":
-                    cost = baseDayRental * numberOfDays.Days;
+                    cost = baseDayRental * numberOfDays;
                     break;
 
                 case "Van":
-                    cost = baseDayRental * numberOfDays.Days * (decimal)1.2
-                        + kmPrice * (booking.MileageAfterKm - booking.MileageBeforeKm);
+                    cost = baseDayRental * numberOfDays * (decimal)1.2
+                        + kmPrice * KmDrivenThisBooking;
                     break;
 
                 case "Minibus":
-                    cost = baseDayRental * numberOfDays.Days * (decimal)1.7
-                        + kmPrice * (booking.MileageAfterKm - booking.MileageBeforeKm) * (decimal)1.5;
+                    cost = baseDayRental * numberOfDays * (decimal)1.7
+                        + kmPrice * KmDrivenThisBooking * (decimal)1.5;
                     break;
             }
 
             booking.Cost = Math.Round(cost.Value, 2);
             booking.IsReturned = true;
+
+            customer.NrOfBookings++;
+            customer.TotalKmDriven += (int)booking.MileageAfterKm - booking.MileageBeforeKm;
+            UpdateCustomerBonus(customer);
 
             context.Bookings.Update(booking);
             context.Events.Add(new Events
@@ -262,5 +297,39 @@ namespace Biluthyrning.Models
             return CarBoxVMList;
         }
 
+        public void UpdateCustomerBonus(Customers customer)
+        {
+            if (customer.BonusLevel == 0 && customer.NrOfBookings >= 3)
+            {
+                customer.BonusLevel = 1;
+                context.Events.Add(new Events
+                {
+                    CustomerId = customer.Id,
+                    EventType = "Upgraded bonus level",
+                    Date = DateTime.Now
+                });
+            }
+            else if ((customer.BonusLevel == 1 || customer.BonusLevel == 2) 
+                && customer.NrOfBookings >= 5 && customer.TotalKmDriven >= 1000)
+            {
+                customer.BonusLevel = 3;
+                context.Events.Add(new Events
+                {
+                    CustomerId = customer.Id,
+                    EventType = "Upgraded bonus level",
+                    Date = DateTime.Now
+                });
+            }
+            else if (customer.BonusLevel == 1 && customer.NrOfBookings >= 5)
+            {
+                customer.BonusLevel = 2;
+                context.Events.Add(new Events
+                {
+                    CustomerId = customer.Id,
+                    EventType = "Upgraded bonus level",
+                    Date = DateTime.Now
+                });
+            }
+        }
     }
 }
