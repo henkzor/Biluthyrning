@@ -13,6 +13,7 @@ namespace Biluthyrning.Models.ViewModels
 
         [Display(Name = "Return date")]
         public DateTime ReturnDate { get; set; }
+
         [Display(Name="Mileage on return")]
         public int MileageReturnKm { get; set; }
 

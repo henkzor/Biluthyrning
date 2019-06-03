@@ -11,5 +11,9 @@ namespace Biluthyrning.Models.Entities
         public int? CustomerId { get; set; }
         public int? BookingId { get; set; }
         public DateTime Date { get; set; }
+
+        public virtual Bookings Booking { get; set; }
+        public virtual Cars Car { get; set; }
+        public virtual Customers Customer { get; set; }
     }
 }

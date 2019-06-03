@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Biluthyrning.Models;
+using Biluthyrning.Models.Data;
 using Biluthyrning.Models.ViewModels;
 using Biluthyrning.Models.ViewModels.CarRental;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,11 @@ namespace Biluthyrning.Controllers
             return View();
         }
 
+        public IActionResult GetBookingInfo([FromBody]InputNrDM INDM)
+        {
+            return Json(service.GetBookingInfo(INDM.Id));
+        }
+
         [HttpGet]
         public IActionResult ShowBooking(int id)
         {
@@ -59,10 +65,7 @@ namespace Biluthyrning.Controllers
         [HttpPost]
         public IActionResult CheckAvailability([FromBody]CarRentalCheckAvailabilityVM data)
         {
-            //CheckAvailability(data);
             return Json(service.CheckCarAvailability(data));
-            //return null;
-            //return new CarController().;
         }
 
     }

@@ -2,24 +2,24 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@*@if (Model.FlaggedForRemoval)
-    {
-        <p>Flagged for removal</p>
-    }*@
 
-<a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id">
-    @Model.Cartype
-    @Model.RegnNr
-    @Model.MileageKm
-    
-</a>
+@*    <a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id">*@
+<tr onclick="location.href ='@(Url.Action("Details", "Car",  new { id = Model.Id }))'" style="cursor: pointer;"> 
 
-@if (Model.FlaggedForCleaning)
-{
-    <button onclick="CleanCar(@Model.Id)">Clean</button>
-}
-@if (Model.FlaggedForService)
-{
-    <button onclick="ServiceCar(@Model.Id)">Service</button>
-}
-<button onclick="RemoveCar(@Model.Id)">Remove Car</button>
+    <td>@Model.Cartype</td>
+    <td>@*<a asp-controller="Car" asp-action="Details" asp-route-id="@Model.Id">*@@Model.RegnNr@*</a>*@</td>
+    <td>@Model.MileageKm</td>
+    <td>
+        @if (Model.FlaggedForCleaning)
+        {
+            <button class="btn btn-warning btn-sm" onclick="CleanCar(@Model.Id)">Clean</button>
+        }
+        @if (Model.FlaggedForService)
+        {
+            <button class="btn btn-warning btn-sm" onclick="ServiceCar(@Model.Id)">Service</button>
+        }
+        <button class="btn btn-warning btn-sm" onclick="RemoveCar(@Model.Id)" >Remove Car</button>
+    </td>
+
+</tr>
+@*</a>*@

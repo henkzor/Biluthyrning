@@ -5,6 +5,11 @@ namespace Biluthyrning.Models.Entities
 {
     public partial class Bookings
     {
+        public Bookings()
+        {
+            Events = new HashSet<Events>();
+        }
+
         public int Id { get; set; }
         public int CarId { get; set; }
         public int CustomerId { get; set; }
@@ -17,5 +22,9 @@ namespace Biluthyrning.Models.Entities
         public int MileageBeforeKm { get; set; }
         public int? MileageAfterKm { get; set; }
         public bool IsReturned { get; set; }
+
+        public virtual Cars Car { get; set; }
+        public virtual Customers Customer { get; set; }
+        public virtual ICollection<Events> Events { get; set; }
     }
 }

@@ -37,47 +37,31 @@ namespace Biluthyrning.Models
 
         public CustomerDetailsVM GetCustomerByID(int id)
         {
-            CustomerDetailsVM CDVM = new CustomerDetailsVM();
-            CDVM.BookingBoxVMList = new List<BookingBoxVM>();
-            CDVM.EventBoxVMList = new List<EventBoxVM>();
-
-            CDVM.FirstName = context.Customers
+            CustomerDetailsVM CDVM = context.Customers
                 .Where(c => c.Id == id)
-                .Select(c => c.FirstName)
-                .FirstOrDefault();
-
-            CDVM.LastName = context.Customers
-                .Where(c => c.Id == id)
-                .Select(c => c.LastName)
-                .FirstOrDefault();
-
-            CDVM.PersonNr = context.Customers
-                .Where(c => c.Id == id)
-                .Select(c => c.PersonNr)
-                .FirstOrDefault();
-
-            foreach (var item in context.Bookings)
-            {
-                if (item.CustomerId == id)
+                .Select(c => new CustomerDetailsVM
                 {
-                    CDVM.BookingBoxVMList.Add(new BookingBoxVM
-                    {
-                        BookingNr = item.BookingNr,
-                        BookingStartTime = item.BookingStart,
-                        BookingEndTime = item.BookingEnd,
-                        CarType = context.Cars
-                        .Where(c => c.Id == item.CarId)
-                        .Select(c => c.Cartype)
-                        .FirstOrDefault(),
-                        CarRegNr = context.Cars
-                        .Where(c => c.Id == item.CarId)
-                        .Select(c => c.RegnNr)
-                        .FirstOrDefault(),
-                        IsReturned = item.IsReturned
-                    });
-                }
-            }
+                    Id = id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    BookingBoxVMList = new List<BookingBoxVM>(),
+                    EventBoxVMList = new List<EventBoxVM>(),
+                    PersonNr = c.PersonNr
+                }).FirstOrDefault();
 
+            CDVM.BookingBoxVMList.AddRange(context.Bookings
+                .Where(b => b.Customer.Id == id)
+                .Select(b => new BookingBoxVM
+                {
+                    BookingNr = b.BookingNr,
+                    BookingStartTime = b.BookingStart,
+                    BookingEndTime = b.BookingEnd,
+                    CarType = b.Car.Cartype,
+                    CarRegNr = b.Car.RegnNr,
+                    IsReturned = b.IsReturned
+                }));
+
+            
             foreach (var item in context.Events)
             {
                 if (item.CustomerId == id)

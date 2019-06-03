@@ -7,30 +7,46 @@
 
 <label asp-for="BookingNr"></label>
 @Model.BookingNr
+<br />
 
 <label asp-for="CustomerPersonNr"></label>
 @Model.CustomerPersonNr
+<br />
 
 <label asp-for="CarType"></label>
 @Model.CarType
+<br />
 
 <label asp-for="CarRegNr"></label>
 @Model.CarRegNr
+<br />
 
 <label asp-for="BookingStartTime"></label>
 @Model.BookingStartTime
+<br />
 
 <label asp-for="BookingEndTime"></label>
 @Model.BookingEndTime
+<br />
 
 <label asp-for="MileageBefore"></label>
 @Model.MileageBefore
+<br />
 
 <label asp-for="MileageAfter"></label>
 @Model.MileageAfter
-
+<br />
 <label asp-for="Cost"></label>
 @Model.Cost kr
+<br />
+
+@*@if(!Model.isReturned)
+    {
+        <a href="/CarRental/Return">Return Car</a>
+    }*@
 
 <br />
-<a href="/CarRental">Back to bookings</a>
+@*<button type="button" class="btn btn-primary" href="/CarRental">Back to bookings</button>*@
+<button class="btn btn-primary" onclick="location.href ='/CarRental'" @*style="cursor: pointer;"*@>Back to bookings</button>
+
+    @*<a href="/CarRental">Back to bookings</a>*@

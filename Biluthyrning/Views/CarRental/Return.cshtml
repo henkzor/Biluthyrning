@@ -9,8 +9,12 @@
 <form asp-controller="CarRental" asp-action="Return">
 
     <label asp-for="BookingNr"></label>
-    <input asp-for="BookingNr" />
+    <input id="BookingNr" asp-for="BookingNr" />
     <span asp-validation-for="BookingNr"></span>
+
+    <button type="button" onclick="GetBookingInfo()">Get booking info</button>
+
+    <div id="returnInputDiv"></div>
 
     <label asp-for="ReturnDate"></label>
     <input asp-for="ReturnDate" />
@@ -19,9 +23,45 @@
     <label asp-for="MileageReturnKm"></label>
     <input asp-for="MileageReturnKm" />
     <span asp-validation-for="MileageReturnKm"></span>
-
     <br />
 
     <input type="submit" value="Return" />
 </form>
 
+@section scripts
+{
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+
+        function GetBookingInfo() {
+            var bookingNr = $("#BookingNr").val();
+            var data = { Id: bookingNr };
+
+            $.ajax({
+                url: "GetBookingInfo",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("GetBookingInfo-anropet fungerade");
+                    console.log(result);
+
+                    var html = "";
+                    html += "<p>Booking number: "+ result.bookingNr + "</p>" ;
+                    html += "<p>Car registration number: " + result.carRegNr + "</p>";
+                    html += "<p>Booking duration: " + result.bookingStartTime + " - " + result.bookingEndTime + "</p>" ;
+                    html += "<p>Booking mileage at start: " + result.mileageBefore + "</p>" ;
+
+                    $("#returnInputDiv").html(html);
+
+
+                }
+            });
+        }
+
+    </script>
+
+}

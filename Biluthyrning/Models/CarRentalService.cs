@@ -12,9 +12,11 @@ namespace Biluthyrning.Models
     public class CarRentalService
     {
         readonly BiluthyrningDBContext context;
+        EventRepository eventRepository;
         public CarRentalService(BiluthyrningDBContext context)
         {
             this.context = context;
+            eventRepository = new EventRepository(context);
         }
 
         public CarRentalIndexVM GetAllBookings()
@@ -81,7 +83,7 @@ namespace Biluthyrning.Models
                 .Select(c => c.MileageKm)
                 .FirstOrDefault();
             booking.IsReturned = false;
-            
+
             context.Bookings.Add(booking);
             context.Events.Add(new Events
             {
@@ -97,67 +99,24 @@ namespace Biluthyrning.Models
             return booking.BookingNr;
         }
 
-         
-
         public CarRentalShowBookingVM GetCarForShowBooking(int BookingNr)
         {
-            CarRentalShowBookingVM CRSBVM = new CarRentalShowBookingVM();
+            return context.Bookings
+                .Where(b => b.Id == BookingNr)
+                .Select(b => new CarRentalShowBookingVM
+                {
+                    BookingNr = b.BookingNr,
+                    BookingStartTime = b.BookingStart,
+                    BookingEndTime = b.BookingEnd,
+                    CarRegNr = b.Car.RegnNr,
+                    CarType = b.Car.Cartype,
+                    Cost = b.Cost,
+                    MileageBefore = b.MileageBeforeKm,
+                    MileageAfter = b.MileageAfterKm,
+                    CustomerPersonNr = b.Customer.PersonNr,
+                    isReturned = b.IsReturned
+                }).FirstOrDefault();
 
-            CRSBVM.BookingNr = BookingNr;
-
-            CRSBVM.CustomerPersonNr = context.Customers
-                .Where(c => c.Id == context.Bookings
-                    .Where(b => b.BookingNr == BookingNr)
-                    .Select(b => b.CustomerId)
-                    .First())
-                .Select(c => c.PersonNr)
-                .FirstOrDefault();
-
-            CRSBVM.CarType = context.Cars
-                .Where(c => c.Id == context.Bookings
-                    .Where(b => b.BookingNr == BookingNr)
-                    .Select(b => b.CarId)
-                    .FirstOrDefault())
-                .Select(c => c.Cartype)
-                .FirstOrDefault();
-
-            CRSBVM.CarRegNr = context.Cars
-                .Where(c => c.Id == context.Bookings
-                    .Where(b => b.BookingNr == BookingNr)
-                    .Select(b => b.CarId)
-                    .FirstOrDefault())
-                .Select(c => c.RegnNr)
-                .FirstOrDefault();
-
-            CRSBVM.BookingStartTime = context.Bookings
-                .Where(b => b.BookingNr == BookingNr)
-                .Select(b => b.BookingStart)
-                .FirstOrDefault();
-
-            CRSBVM.BookingEndTime = context.Bookings
-                .Where(b => b.BookingNr == BookingNr)
-                .Select(b => b.BookingEnd)
-                .FirstOrDefault();
-
-            CRSBVM.MileageBefore = context.Cars
-                .Where(c => c.Id == context.Bookings
-                    .Where(b => b.BookingNr == BookingNr)
-                    .Select(b => b.CarId)
-                    .FirstOrDefault())
-                .Select(c => c.MileageKm)
-                .FirstOrDefault();
-
-            CRSBVM.MileageAfter = context.Bookings
-                .Where(b => b.BookingNr == BookingNr)
-                .Select(b => b.MileageAfterKm)
-                .FirstOrDefault();
-
-            CRSBVM.Cost = context.Bookings
-                .Where(b => b.BookingNr == BookingNr)
-                .Select(b => b.Cost)
-                .FirstOrDefault();
-
-            return CRSBVM;
         }
 
         public void ReturnCar(CarRentalReturnVM CRRVM)
@@ -169,8 +128,7 @@ namespace Biluthyrning.Models
 
             booking.MileageAfterKm = CRRVM.MileageReturnKm;
             booking.ReturnDate = CRRVM.ReturnDate;
-
-
+                
             Cars bookingCar = context.Cars
                 .Where(c => c.Id == booking.CarId)
                 .Select(c => c)
@@ -189,7 +147,7 @@ namespace Biluthyrning.Models
 
             decimal? cost = 0;
             int baseDayRental = 500;
-            if ( customer.BonusLevel >= 1)
+            if (customer.BonusLevel >= 1)
             {
                 baseDayRental = baseDayRental / 2;
             }
@@ -245,10 +203,10 @@ namespace Biluthyrning.Models
 
             customer.NrOfBookings++;
             customer.TotalKmDriven += (int)booking.MileageAfterKm - booking.MileageBeforeKm;
-            UpdateCustomerBonus(customer);
+            eventRepository.UpdateCustomerBonus(customer.Id);
 
             context.Bookings.Update(booking);
-            context.Events.Add(new Events
+            eventRepository.AddEvent(new Events
             {
                 BookingId = booking.Id,
                 CarId = booking.CarId,
@@ -257,17 +215,14 @@ namespace Biluthyrning.Models
                 Date = DateTime.Now
             });
             context.SaveChanges();
-                    
         }
 
         public List<CarBoxVM> CheckCarAvailability(CarRentalCheckAvailabilityVM CRCAVM)
         {
             List<CarBoxVM> CarBoxVMList = new List<CarBoxVM>();
-            //List<int> UnAvailibleCarsList = new List<int>();
-            //List<int> AvailibleCarsList = new List<int>();
 
             CarBoxVMList.AddRange(context.Cars
-               .Where( c => c.Active)
+               .Where(c => c.Active)
                .Select(c => new CarBoxVM
                {
                    Cartype = c.Cartype,
@@ -278,58 +233,30 @@ namespace Biluthyrning.Models
 
             foreach (var booking in context.Bookings)
             {
-                if ( CRCAVM.StartDate < booking.BookingEnd && booking.BookingStart < CRCAVM.EndDate)
+                if (CRCAVM.StartDate < booking.BookingEnd && booking.BookingStart < CRCAVM.EndDate)
                 {
                     CarBoxVMList.Remove(CarBoxVMList
                         .Select(c => c)
                         .Where(c => c.Id == booking.CarId)
                         .FirstOrDefault());
-
-                    //UnAvailibleCarsList.Add(booking.CarId);
-                    //if (AvailibleCarsList.Contains(booking.CarId))
-                    //{
-                    //    AvailibleCarsList.Remove(booking.CarId); 
-                    //}
                 }
             }
 
-            //return AvailibleCarsList;
             return CarBoxVMList;
         }
 
-        public void UpdateCustomerBonus(Customers customer)
+        public CarRentalGetBookingInfoVM GetBookingInfo(int BookingNr)
         {
-            if (customer.BonusLevel == 0 && customer.NrOfBookings >= 3)
-            {
-                customer.BonusLevel = 1;
-                context.Events.Add(new Events
+            return context.Bookings
+                .Where(o => o.Id == BookingNr)
+                .Select(o => new CarRentalGetBookingInfoVM
                 {
-                    CustomerId = customer.Id,
-                    EventType = "Upgraded bonus level",
-                    Date = DateTime.Now
-                });
-            }
-            else if ((customer.BonusLevel == 1 || customer.BonusLevel == 2) 
-                && customer.NrOfBookings >= 5 && customer.TotalKmDriven >= 1000)
-            {
-                customer.BonusLevel = 3;
-                context.Events.Add(new Events
-                {
-                    CustomerId = customer.Id,
-                    EventType = "Upgraded bonus level",
-                    Date = DateTime.Now
-                });
-            }
-            else if (customer.BonusLevel == 1 && customer.NrOfBookings >= 5)
-            {
-                customer.BonusLevel = 2;
-                context.Events.Add(new Events
-                {
-                    CustomerId = customer.Id,
-                    EventType = "Upgraded bonus level",
-                    Date = DateTime.Now
-                });
-            }
+                    BookingNr = o.BookingNr,
+                    BookingEndTime = o.BookingEnd,
+                    BookingStartTime = o.BookingStart,
+                    CarRegNr = o.Car.RegnNr,
+                    MileageBefore = o.MileageBeforeKm
+                }).FirstOrDefault();
         }
     }
 }

@@ -7,12 +7,31 @@
 
 <a href="/Car/AddCar">Add a new car</a>
 
-<ul>
-    @foreach (var item in Model.CarBoxVMList)
-    {
-        <li><partial name="_CarBox" model=item /> </li>
-    }
-</ul>
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Car type</th>
+                    <th>Registration number</th>
+                    <th>Mileage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CarBoxVMList)
+                {
+                    <partial name="_CarBox" model=item />
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
 
 
 @section scripts
@@ -22,8 +41,7 @@
 
     <script>
 
-        function CleanCar(CarId)
-        {
+        function CleanCar(CarId) {
             var data = { CarId: CarId };
             $.ajax({
                 url: "CleanCar",
@@ -40,8 +58,7 @@
                 }
             });
         }
-        function ServiceCar(CarId)
-        {
+        function ServiceCar(CarId) {
             var data = { CarId: CarId };
             $.ajax({
                 url: "ServiceCar",
@@ -59,8 +76,7 @@
                 }
             });
         }
-        function RemoveCar(CarId)
-        {
+        function RemoveCar(CarId) {
             var data = { CarId: CarId };
             $.ajax({
                 url: "RemoveCar",

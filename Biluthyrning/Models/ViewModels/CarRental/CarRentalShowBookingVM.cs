@@ -9,32 +9,35 @@ namespace Biluthyrning.Models.ViewModels
     public class CarRentalShowBookingVM
     {
 
-        [Display(Name = "Booking number")]
+        [Display(Name = "Booking number:")]
         public int BookingNr { get; set; }
 
-        [Display(Name = "Person number")]
+        [Display(Name = "Person number:")]
         public string CustomerPersonNr { get; set; }
 
-        [Display(Name = "Car type")]
+        [Display(Name = "Car type:")]
         public string CarType { get; set; }
 
-        [Display(Name = "Car registration number")]
+        [Display(Name = "Car registration number:")]
         public string CarRegNr { get; set; }
 
-        [Display(Name = "Booking starts at")]
+        [Display(Name = "Booking starts at:")]
         public DateTime? BookingStartTime { get; set; }
 
-        [Display(Name = "Booking ends at")]
+        [Display(Name = "Booking ends at:")]
         public DateTime? BookingEndTime { get; set; }
 
-        [Display(Name = "Mileage at start")]
+        [Display(Name = "Mileage at start:")]
         public int? MileageBefore { get; set; }
 
-        [Display(Name = "Mileage at return")]
+        [Display(Name = "Mileage at return:")]
         public int? MileageAfter { get; set; }
 
-        [Display(Name = "Total cost")]
+        [Display(Name = "Total cost:")]
         public decimal? Cost { get; set; }
+
+        [Display(Name = "Is car returned?")]
+        public bool isReturned { get; set; }
 
     }
 }

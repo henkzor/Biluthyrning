@@ -1,10 +1,15 @@
 ﻿@model CustomerBoxVM
 
-<a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.Id">
+    @*<a asp-controller="Customer" asp-action="Details" asp-route-id="@Model.Id">*@  
+   
+<tr onclick="location.href ='@(Url.Action("Details", "Customer",  new { id = Model.Id }))'" style="cursor: pointer;">
 
-    @Model.FirstName
-    @Model.LastName
-    @Model.PersonNr
-    
+    <td>@Model.FirstName</td>
+    <td>@Model.LastName</td>
+    <td>@Model.PersonNr</td>
 
-</a>
+</tr>
+    @*</a>*@
+
+
+

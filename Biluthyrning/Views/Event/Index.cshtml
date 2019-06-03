@@ -4,9 +4,28 @@
 }
 
 <h3>Events</h3>
-<ul>
-    @foreach (var item in Model.EventBoxVMList)
-    {
-        <li><partial name="_EventBox" model=item /> </li>
-    }
-</ul>
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Event number</th>
+                    <th>Event type</th>
+                    <th>Date </th>
+                    <th>Car number</th>
+                    <th>Booking number</th>
+                    <th>Customer number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.EventBoxVMList)
+                {
+
+                    <partial name="_EventBox" model=item />
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

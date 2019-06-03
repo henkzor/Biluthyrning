@@ -2,12 +2,13 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-<a asp-controller="CarRental" asp-action="ShowBooking" asp-route-id="@Model.BookingNr">
+@*<a asp-controller="CarRental" asp-action="ShowBooking" asp-route-id="@Model.BookingNr">*@
+<tr onclick="location.href ='@(Url.Action("ShowBooking", "CarRental",  new { id = Model.BookingNr }))'" style="cursor: pointer;">
 
-    @Model.BookingNr
-    @Model.BookingStartTime
-    @Model.BookingEndTime
-    @Model.CarType
-    @Model.CarRegNr
-
-</a>
+    <td>@Model.BookingNr</td>
+    <td>@Model.BookingStartTime</td>
+    <td>@Model.BookingEndTime</td>
+    <td>@Model.CarType</td>
+    <td>@Model.CarRegNr</td>
+</tr>
+@*</a>*@
