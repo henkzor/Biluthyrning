@@ -37,6 +37,7 @@ namespace Biluthyrning.Models
 
         public CustomerDetailsVM GetCustomerByID(int id)
         {
+
             CustomerDetailsVM CDVM = context.Customers
                 .Where(c => c.Id == id)
                 .Select(c => new CustomerDetailsVM
@@ -44,45 +45,69 @@ namespace Biluthyrning.Models
                     Id = id,
                     FirstName = c.FirstName,
                     LastName = c.LastName,
-                    BookingBoxVMList = new List<BookingBoxVM>(),
-                    EventBoxVMList = new List<EventBoxVM>(),
+                    BookingBoxVMList = context.Bookings
+                        .Where(b => b.Customer.Id == id)
+                        .Select(b => new BookingBoxVM
+                        {
+                            BookingNr = b.BookingNr,
+                            BookingStartTime = b.BookingStart,
+                            BookingEndTime = b.BookingEnd,
+                            CarType = b.Car.Cartype,
+                            CarRegNr = b.Car.RegnNr,
+                            IsReturned = b.IsReturned
+                        }).ToList(),
+                    EventBoxVMList = context.Events
+                        .Where(e => e.CustomerId == id)
+                        .Select( e => new EventBoxVM
+                        {
+                            EventId = e.Id,
+                            CarId = e.CarId,
+                            EventType = e.EventType,
+                            Date = e.Date,
+                            CustomerId = e.CustomerId,
+                            BookingId = e.BookingId
+                            
+                        }).ToList(),
                     PersonNr = c.PersonNr
                 }).FirstOrDefault();
 
-            CDVM.BookingBoxVMList.AddRange(context.Bookings
-                .Where(b => b.Customer.Id == id)
-                .Select(b => new BookingBoxVM
-                {
-                    BookingNr = b.BookingNr,
-                    BookingStartTime = b.BookingStart,
-                    BookingEndTime = b.BookingEnd,
-                    CarType = b.Car.Cartype,
-                    CarRegNr = b.Car.RegnNr,
-                    IsReturned = b.IsReturned
-                }));
+            //CDVM.BookingBoxVMList.Clear();
+            //CDVM.EventBoxVMList.Clear();
 
-            
-            foreach (var item in context.Events)
-            {
-                if (item.CustomerId == id)
-                {
-                    EventBoxVM EBVM = new EventBoxVM();
+            //CDVM.BookingBoxVMList.AddRange(context.Bookings
+            //    .Where(b => b.Customer.Id == id)
+            //    .Select(b => new BookingBoxVM
+            //    {
+            //        BookingNr = b.BookingNr,
+            //        BookingStartTime = b.BookingStart,
+            //        BookingEndTime = b.BookingEnd,
+            //        CarType = b.Car.Cartype,
+            //        CarRegNr = b.Car.RegnNr,
+            //        IsReturned = b.IsReturned
+            //    }));
 
-                    if (item.EventType == "Created Booking" || item.EventType == "Returned Car")
-                    {
-                        EBVM.BookingId = item.BookingId;
-                        EBVM.CustomerId = item.CustomerId;
-                    }
 
-                    EBVM.EventId = item.Id;
-                    EBVM.CarId = item.CarId;
-                    EBVM.EventType = item.EventType;
-                    EBVM.Date = item.Date;
+            //foreach (var item in context.Events)
+            //{
+            //    if (item.CustomerId == id)
+            //    {
+            //        EventBoxVM EBVM = new EventBoxVM();
 
-                    CDVM.EventBoxVMList.Add(EBVM);
+            //        if (item.EventType == "Created Booking" || item.EventType == "Returned Car")
+            //        {
+            //            EBVM.BookingId = item.BookingId;
+            //            EBVM.CustomerId = item.CustomerId;
+            //        }
 
-                }
-            }
+            //        EBVM.EventId = item.Id;
+            //        EBVM.CarId = item.CarId;
+            //        EBVM.EventType = item.EventType;
+            //        EBVM.Date = item.Date;
+
+            //        CDVM.EventBoxVMList.Add(EBVM);
+
+            //    }
+            //}
 
             return CDVM;
         }

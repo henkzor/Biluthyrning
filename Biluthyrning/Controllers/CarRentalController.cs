@@ -68,5 +68,11 @@ namespace Biluthyrning.Controllers
             return Json(service.CheckCarAvailability(data));
         }
 
+        [HttpPost]
+        public IActionResult CheckCustomer([FromBody]CheckCustomerDM data)
+        {
+            return Json(service.CheckCustomer(data));
+        }
+
     }
 }

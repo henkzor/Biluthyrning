@@ -7,26 +7,37 @@
 
 
 <form asp-controller="Account" asp-action="Create">
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label asp-for="LastName"></label>
+            <input class="form-control" asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label asp-for="Password"></label>
+            <input class="form-control" asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label asp-for="PasswordRepeat"></label>
+            <input class="form-control" asp-for="PasswordRepeat" />
+            <span asp-validation-for="PasswordRepeat"></span>
+        </div>
+    </div>
 
-    <label asp-for="FirstName"></label>
-    <input asp-for="FirstName" />
-    <span asp-validation-for="FirstName"></span>
+    <input type="submit" class="btn btn-primary" value="Create" />
 
-    <label asp-for="LastName"></label>
-    <input asp-for="LastName" />
-    <span asp-validation-for="LastName"></span>
-
-    <label asp-for="Password"></label>
-    <input asp-for="Password" />
-    <span asp-validation-for="Password"></span>
-
-    <label asp-for="PasswordRepeat"></label>
-    <input asp-for="PasswordRepeat" />
-    <span asp-validation-for="PasswordRepeat"></span>
-
-    <br />
-
-    <input type="submit" value="Create" />
 </form>
 
 <a href="/Account/Login">Back</a>

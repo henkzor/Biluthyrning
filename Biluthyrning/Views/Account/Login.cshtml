@@ -7,28 +7,35 @@
 
 @if (TempData["Message"] != null)
 {
-    <p style="color:red">@TempData["Message"]</p>
+    <div class="alert alert-success " role="alert">
+        @TempData["Message"]
+    </div>
+
 }
 
 <form asp-controller="Account" asp-action="Login">
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="FirstName"></label>
+            <input class="form-control" asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label asp-for="Password"></label>
+            <input class="form-control" asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+    </div>
 
-    <label asp-for="FirstName"></label>
-    <input asp-for="FirstName" />
-    <span asp-validation-for="FirstName"></span>
-
-    <label asp-for="Password"></label>
-    <input asp-for="Password" />
-    <span asp-validation-for="Password"></span>
-
-    <br />
-
-    <input type="submit" value="Login" />
+    <input type="submit" class="btn btn-primary" value="Login" />
 </form>
 
 <p>Don't have an account? Sign up <a href="/Account/Create">Here</a>!</p>
 
 
-<div asp-validation-summary="All"></div>
+@*<div asp-validation-summary="All"></div>*@
 
 @section scripts
 {

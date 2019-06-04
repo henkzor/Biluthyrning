@@ -7,22 +7,60 @@
 
 
 @Model.Car.Id
+<br />
 @Model.Car.RegnNr
+<br />
 @Model.Car.MileageKm
 
+<br />
+
 <h4>Bookings</h4>
-@foreach (var item in Model.BookingBoxVMList)
-{
 
-    <li><partial name="_BookingBox" model="item" /></li>
+<div class="row">
+    <div class="col-md-8 col-lg-12">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Car number</th>
+                    <th>Booking starts</th>
+                    <th>Booking ends</th>
+                    <th>Car type</th>
+                    <th>Registration number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.BookingBoxVMList)
+                {
+                    <partial name="_BookingBox" model="item" />
+                }
 
-}
-
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <h4>Events</h4>
-@foreach (var item in Model.EventBoxVMList)
-{
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Event number</th>
+                    <th>Event type</th>
+                    <th>Date </th>
+                    <th>Car number</th>
+                    <th>Booking number</th>
+                    <th>Customer number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = Model.EventBoxVMList.Count() - 1; i >= 0; i--)
+                {
+                    <partial name="_EventBox" model=Model.EventBoxVMList[i] />
 
-    <li><partial name="_EventBox" model="item" /></li>
+                }
 
-}
+            </tbody>
+        </table>
+    </div>
+</div>

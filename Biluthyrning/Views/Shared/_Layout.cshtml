@@ -5,29 +5,69 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">*@
     @*<link rel="stylesheet" href="~/res/bootstrap-4.3.1-dist/css/bootstrap.css" />*@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        <a href="/Home">Home</a>
-        <a href="/CarRental/Index">Car rental</a>
-        <a href="/Customer/Index">Customers</a>
-        <a href="/Car/Index">Cars</a>
-        <a href="/Event/Index">Events</a>
-        <a href="/Account/Login">Login</a>
-        <a href="/Account/Logout">Logout</a>
-    </header>
-    <div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="/Home">Biluthyrningen</a>
+            @*<div class="collapse navbar-collapse" id="navbarNav">*@
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/CarRental/Index">Car rental</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Customer/Index">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Car/Index">Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Event/Index">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+            
+
+    @*<header>
+            <a href="/Home">Home</a>
+            <a href="/CarRental/Index">Car rental</a>
+            <a href="/Customer/Index">Customers</a>
+            <a href="/Car/Index">Cars</a>
+            <a href="/Event/Index">Events</a>
+            <a href="/Account/Login">Login</a>
+            <a href="/Account/Logout">Logout</a>
+        </header>*@
+    <div class="container text-body">
         <h1>Biluthyrningen</h1>
 
 
         @RenderBody()
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Biluthyrningen </p>
+        </footer>
     </div>
 
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>*@
     @RenderSection("scripts", false)
 </body>
 </html>

@@ -5,43 +5,74 @@
 
 <h3>Booking</h3>
 
-<form asp-controller="CarRental" asp-action="Booking">
+<form asp-controller="CarRental" asp-action="Booking" >
 
-    <label asp-for="PersonNr"></label>
-    <input asp-for="PersonNr" />
-    <span asp-validation-for="PersonNr"></span>
-
-    <div id="CustomerInformationInputDiv" style="background-color: aliceblue">
-        <h6>If registering a new customer, please enter details below</h6>
-        <div style="float:left; padding-right:10px;">
-            <label asp-for="FirstName"></label>
-            <input asp-for="FirstName" />
-            <span asp-validation-for="FirstName"></span>
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label asp-for="PersonNr"></label>
+            <input class="form-control" id="CustomerPersonNr" asp-for="PersonNr" />
+            <span asp-validation-for="PersonNr"></span>
         </div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
+    </div>
+    <button type="button" class="btn btn-secondary" id="btnCheckCustomer"
+            onclick="CheckCustomer()">
+        Check customer
+    </button>
+    <br />
+
+
+    <div id="CustomerInformationInputDiv" style="background-color: aliceblue" hidden>
+        <br />
+
+        <div class="form-row">
+            <div class="form-group col-4">
+                <label asp-for="FirstName">Customers First Name</label>
+                <input class="form-control" id="firstNameInput" asp-for="FirstName" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+                
+            <div class="form-group col-4">
+                <label asp-for="LastName">Customers Last Name</label>
+                <input class="form-control" id="lastNameInput" asp-for="LastName" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+
+        @*<h6>If registering a new customer, please enter details below</h6>*@
+        @*<div class="form-row"><div class="form-group col-4"><label asp-for="FirstName"></label>
+        <input class="form-control" asp-for="FirstName" /><span asp-validation-for="FirstName"></span>
+        </div><div class="form-group col-4"><label asp-for="LastName"></label><input class="form-control"
+        asp-for="LastName" /><span asp-validation-for="LastName"></span></div></div>*@
+    </div>
+    <br />
+
+    <div class="form-row">
+        <div class="form-group col-4">
+            <label asp-for="StartDate"></label>
+            <input class="form-control" id="StartDate" asp-for="StartDate" min=@DateTime.Today  />
+            <span asp-validation-for="StartDate"></span>
+        </div>
+
+        <div class="form-group col-4">
+            <label asp-for="EndDate"></label>
+            <input class="form-control" id="EndDate" asp-for="EndDate"  />
+            <span asp-validation-for="EndDate"></span>
+        </div>
+    </div>
+    <div id="dateErrorMessageDiv"></div>
+
+
+    <button type="button" class="btn btn-secondary" id="btnCheckAvailability" onclick="CheckAvailability()">Check available cars</button>
+    <br /><br />
+    <div class="form-row">
+        <div  class="form-group col-4">
+
+            <select asp-for="CarId" id="AvailabilityResultsDiv" class="form-control" hidden></select>
+
+        </div>
     </div>
 
-    <div style="float:left; padding-right:10px;">
-        <label asp-for="StartDate"></label>
-        <input id="StartDate" asp-for="StartDate" />
-        <span asp-validation-for="StartDate"></span>
-    </div>
-
-    <label asp-for="EndDate"></label>
-    <input id="EndDate" asp-for="EndDate" />
-    <span asp-validation-for="EndDate"></span>
-    <br />
-    <button type="button" id="btnCheckAvailability" onclick="CheckAvailability()">Check availability</button>
-    <select id="AvailabilityResultsDiv" asp-for="CarId">
-        <option value="" disabled selected>Select availible car</option>
-    </select>
-      
-    <br />
-    <br />
-
-    <input type="submit" value="Create" />
+    <input type="submit" class="btn btn-primary" value="Create" />
 </form>
 
 
@@ -49,41 +80,79 @@
 
 @section scripts
 {
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.3/jquery.validate.unobtrusive.min.js"></script>
+    <script>
 
-<script>
-    
-    function CheckAvailability()
-    {
-        var startDate = $("#StartDate").val();
-        var endDate = $("#EndDate").val();
-        var data = { StartDate: startDate, EndDate: endDate };
+        window.onload = function () {
+            //document.querySelector("#StartDate").valueAsDateTime = new Date();
+            let today = new Date().toISOString().substr(0, 16);
+            document.querySelector("#StartDate").value = today;
+            document.querySelector("#EndDate").value = today;
 
-        $.ajax({
-            url: "CheckAvailability",
-            type: "POST",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                console.log("CheckAvailability-anropet fungerade");
-                console.log(result);
+        }
 
-                var html = '<option value="" disabled selected>Select availible car</option>';
+        function CheckCustomer() {
+            var personNumber = $("#CustomerPersonNr").val();
+            var data = { PersonNr: personNumber };
 
-                for (var i = 0; i < result.length; i++) {
-                    html += '<option value="' + result[i].id + '">' + result[i].cartype
-                        + " " + result[i].regnNr + " " + result[i].mileageKm +  '</option>'; 
+            $.ajax({
+                url: "CheckCustomer",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("CheckCustomer-anropet fungerade");
+                    console.log(result);
+
+                    $("#firstNameInput").val(result.firstName);
+                    $("#lastNameInput").val(result.lastName);
+
+                    CustomerInformationInputDiv.hidden = false;
                 }
+            });
+        }
 
-                $("#AvailabilityResultsDiv").html(html);
-                
+        function CheckAvailability() {
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val();
+
+            if (startDate < endDate) {
+
+
+                var data = { StartDate: startDate, EndDate: endDate };
+
+                $.ajax({
+                    url: "CheckAvailability",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        console.log("CheckAvailability-anropet fungerade");
+                        console.log(result);
+
+                        //var html = '<select asp-for="CarId" class="form-control"><option value="" hidden>Select availible car</option>';
+                        var html = '<option value="" hidden>Select availible car</option>';
+                        for (var i = 0; i < result.length; i++) {
+                            html += '<option value="' + result[i].id + '">' + result[i].cartype
+                                + " " + result[i].regnNr + " " + result[i].mileageKm + '</option>';
+                        }
+
+                        //html += "</select>";
+                        $("#AvailabilityResultsDiv").html(html);
+                        AvailabilityResultsDiv.hidden = false;
+
+                    }
+                });
+            }
+            else {
+                var html = '<div class="alert alert-danger" role="alert">End date must be after start date</div>';
+                $("#dateErrorMessageDiv").html(html);
 
             }
-        });
-    }
-    
-</script>
-    
+        }
+
+    </script>
 }

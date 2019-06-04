@@ -8,24 +8,38 @@
 
 <form asp-controller="CarRental" asp-action="Return">
 
-    <label asp-for="BookingNr"></label>
-    <input id="BookingNr" asp-for="BookingNr" />
-    <span asp-validation-for="BookingNr"></span>
+    
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="BookingNr"></label>
+            <input id="BookingNr" class="form-control" asp-for="BookingNr" />
+            <span asp-validation-for="BookingNr"></span>
+        </div>
+    </div>
 
-    <button type="button" onclick="GetBookingInfo()">Get booking info</button>
-
+    <button type="button" class="btn btn-secondary" onclick="GetBookingInfo()">Get booking info</button>
     <div id="returnInputDiv"></div>
 
-    <label asp-for="ReturnDate"></label>
-    <input asp-for="ReturnDate" />
-    <span asp-validation-for="ReturnDate"></span>
 
-    <label asp-for="MileageReturnKm"></label>
-    <input asp-for="MileageReturnKm" />
-    <span asp-validation-for="MileageReturnKm"></span>
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="ReturnDate"></label>
+            <input class="form-control" asp-for="ReturnDate" />
+            <span asp-validation-for="ReturnDate"></span>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="MileageReturnKm"></label>
+            <input class="form-control" asp-for="MileageReturnKm" />
+            <span asp-validation-for="MileageReturnKm"></span>
+        </div>
+    </div>
+
     <br />
 
-    <input type="submit" value="Return" />
+    <input type="submit" class="btn btn-primary" value="Return" />
 </form>
 
 @section scripts

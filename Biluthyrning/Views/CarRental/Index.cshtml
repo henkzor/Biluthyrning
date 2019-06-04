@@ -11,7 +11,7 @@
 <h4>Booked cars</h4>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8 col-lg-12">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -38,7 +38,7 @@
 
 <h4>Returned cars</h4>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8 col-lg-12">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -52,7 +52,7 @@
             <tbody>
                 @foreach (var item in Model.BookingBoxVMList)
                 {
-                    if (!item.IsReturned)
+                    if (item.IsReturned)
                     {
                         <partial name="_BookingBox" model="item" />
                     }

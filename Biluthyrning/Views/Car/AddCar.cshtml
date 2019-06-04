@@ -7,26 +7,35 @@
 
 <form asp-controller="Car" asp-action="AddCar">
 
-    <label asp-for="Cartype"></label>
-    <select asp-for="Cartype">
-        <option value="Small car">Small car</option>
-        <option value="Van">Van</option>
-        <option value="Minibus">Minibus</option>
-    </select>
-    <span asp-validation-for="Cartype"></span>
 
-    <label asp-for="RegNr"></label>
-    <input asp-for="RegNr" />
-    <span asp-validation-for="RegNr"></span>
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="Cartype"></label>
+            <select class="form-control" asp-for="Cartype">
+                <option value="Small car">Small car</option>
+                <option value="Van">Van</option>
+                <option value="Minibus">Minibus</option>
+            </select>
+            <span asp-validation-for="Cartype"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3 ">
+            <label asp-for="RegNr"></label>
+            <input class="form-control" asp-for="RegNr" />
+            <span asp-validation-for="RegNr"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label asp-for="MileageKm"></label>
+            <input class="form-control" asp-for="MileageKm" />
+            <span asp-validation-for="MileageKm"></span>
+        </div>
+    </div>
 
-    <label asp-for="MileageKm"></label>
-    <input asp-for="MileageKm" />
-    <span asp-validation-for="MileageKm"></span>
 
-    
-    <br />
-
-    <input type="submit" value="Add car" />
+    <input type="submit" class="btn btn-primary" value="Add car" />
 </form>
 
 

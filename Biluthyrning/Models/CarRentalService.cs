@@ -1,4 +1,5 @@
-﻿using Biluthyrning.Models.Entities;
+﻿using Biluthyrning.Models.Data;
+using Biluthyrning.Models.Entities;
 using Biluthyrning.Models.ViewModels;
 using Biluthyrning.Models.ViewModels.CarRental;
 using Biluthyrning.Models.ViewModels.Shared;
@@ -85,9 +86,11 @@ namespace Biluthyrning.Models
             booking.IsReturned = false;
 
             context.Bookings.Add(booking);
+
+
             context.Events.Add(new Events
             {
-                BookingId = booking.BookingNr,
+                BookingId = booking.Id,
                 CarId = booking.CarId,
                 CustomerId = booking.CustomerId,
                 EventType = "Created Booking",
@@ -98,6 +101,8 @@ namespace Biluthyrning.Models
 
             return booking.BookingNr;
         }
+
+        
 
         public CarRentalShowBookingVM GetCarForShowBooking(int BookingNr)
         {
@@ -243,6 +248,24 @@ namespace Biluthyrning.Models
             }
 
             return CarBoxVMList;
+        }
+
+        public CheckCustomerDM CheckCustomer(CheckCustomerDM data)
+        {
+            if(context.Customers.Any(c => c.PersonNr == data.PersonNr))
+            {
+                return context.Customers
+                    .Where(c => c.PersonNr == data.PersonNr)
+                    .Select(c => new CheckCustomerDM
+                    {
+                        CustomerFound = true,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                    }).FirstOrDefault();
+            }
+            data.CustomerFound = false;
+            return data;
+
         }
 
         public CarRentalGetBookingInfoVM GetBookingInfo(int BookingNr)
