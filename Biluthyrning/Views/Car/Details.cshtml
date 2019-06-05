@@ -3,16 +3,17 @@
     ViewData["Title"] = "Details";
 }
 
-<h3>Car Details</h3>
 
+<div>
+    <h3>Car Details</h3>
+    <span><b>Car ID: </b>@Model.Car.Id</span>
+    <br />
+    <span><b>Registration number: </b>@Model.Car.RegnNr</span>
+    <br />
+    <span><b>Current mileage:</b> @Model.Car.MileageKm</span>
+</div>
 
-@Model.Car.Id
-<br />
-@Model.Car.RegnNr
-<br />
-@Model.Car.MileageKm
-
-<br />
+<br /><br />
 
 <h4>Bookings</h4>
 

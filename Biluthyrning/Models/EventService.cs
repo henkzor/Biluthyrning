@@ -26,17 +26,12 @@ namespace Biluthyrning.Models
             {
                 EventBoxVM EBVM = new EventBoxVM();
 
-                if (item.EventType == "Created Booking" || item.EventType == "Returned Car")
-                {
-                    EBVM.BookingId = item.BookingId;
-                    EBVM.CustomerId = item.CustomerId;
-                }
-
+                EBVM.BookingId = item.BookingId;
+                EBVM.CustomerId = item.CustomerId;
                 EBVM.EventId = item.Id;
                 EBVM.CarId = item.CarId;
                 EBVM.EventType = item.EventType;
                 EBVM.Date = item.Date;
-
 
                 EIVM.EventBoxVMList.Add(EBVM);
             }

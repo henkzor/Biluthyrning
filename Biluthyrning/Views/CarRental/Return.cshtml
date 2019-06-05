@@ -10,7 +10,7 @@
 
     
     <div class="form-row">
-        <div class="form-group col-3 ">
+        <div class="form-group col-12 col-sm-6 col-md-4">
             <label asp-for="BookingNr"></label>
             <input id="BookingNr" class="form-control" asp-for="BookingNr" />
             <span asp-validation-for="BookingNr"></span>
@@ -22,7 +22,7 @@
 
 
     <div class="form-row">
-        <div class="form-group col-3 ">
+        <div class="form-group col-12 col-sm-6 col-md-4">
             <label asp-for="ReturnDate"></label>
             <input class="form-control" asp-for="ReturnDate" />
             <span asp-validation-for="ReturnDate"></span>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="form-row">
-        <div class="form-group col-3 ">
+        <div class="form-group col-12 col-sm-6 col-md-4">
             <label asp-for="MileageReturnKm"></label>
             <input class="form-control" asp-for="MileageReturnKm" />
             <span asp-validation-for="MileageReturnKm"></span>
@@ -39,7 +39,7 @@
 
     <br />
 
-    <input type="submit" class="btn btn-primary" value="Return" />
+    <input type="submit" class="btn btn-primary" value="Return Car" />
 </form>
 
 @section scripts
@@ -64,13 +64,24 @@
                     console.log(result);
 
                     var html = "";
-                    html += "<p>Booking number: "+ result.bookingNr + "</p>" ;
-                    html += "<p>Car registration number: " + result.carRegNr + "</p>";
-                    html += "<p>Booking duration: " + result.bookingStartTime + " - " + result.bookingEndTime + "</p>" ;
-                    html += "<p>Booking mileage at start: " + result.mileageBefore + "</p>" ;
+                    if (result != null) {
+                        if (!result.isReturned) {
+                            html += "<p>Booking number: " + result.bookingNr + "</p>";
+                            html += "<p>Car registration number: " + result.carRegNr + "</p>";
+                            html += "<p>Booking duration: " + result.bookingStartTime + "</p>";
+                            html += "<p>Booking end time: " + result.bookingEndTime + "</p>";
+                            html += "<p>Booking mileage at start: " + result.mileageBefore + "</p>";
+                        }
+                        else {
+                            html += '<div class="alert alert-warning " role="alert">That car is already returned</div>';
+                            
+                        }
+                    }
+                    else {
+                        html += '<div class="alert alert-warning " role="alert">No booking with that number exists</div>';
+                    }
 
                     $("#returnInputDiv").html(html);
-
 
                 }
             });

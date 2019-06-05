@@ -18,6 +18,9 @@ namespace Biluthyrning.Models.ViewModels
         [Display(Name = "Person Number")]
         public string PersonNr { get; set; }
 
+        [Display(Name = "Customer bonus level")]
+        public int BonusLevel { get; set; }
+
         public List<BookingBoxVM> BookingBoxVMList { get; set; }
 
         public List<EventBoxVM> EventBoxVMList { get; set; }

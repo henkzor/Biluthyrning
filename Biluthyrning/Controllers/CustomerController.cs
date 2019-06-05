@@ -20,16 +20,12 @@ namespace Biluthyrning.Controllers
 
         public IActionResult Index()
         {
-
             return View(service.GetAllCustomers());
         }
-
-        
 
         public IActionResult Details(int id)
         {
             return View(service.GetCustomerByID(id));
-
         }
     }
 }

@@ -10,15 +10,8 @@
         <td>@Model.EventType</td>
         <td>@Model.Date</td>
         <td>@Model.CarId</td>
-
-        @if (Model.EventType == "Created Booking" || Model.EventType == "Returned Car")
-        {
-            <td>@Model.BookingId</td>
-            <td>@Model.CustomerId</td>
-        }else
-        {
-            <td></td>
-            <td></td>
-        }
+        <td>@Model.BookingId</td>
+        <td>@Model.CustomerId</td>
+        
     </tr>
 

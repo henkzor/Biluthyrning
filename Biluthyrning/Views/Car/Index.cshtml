@@ -4,6 +4,13 @@
 }
 
 <h3>Cars</h3>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success " role="alert">
+        @TempData["Message"]
+    </div>
+
+}
 
 @*<a href="/Car/AddCar">Add a new car</a>*@
 <button class="btn btn-primary" onclick="location.href ='/Car/AddCar'">Add a car</button>

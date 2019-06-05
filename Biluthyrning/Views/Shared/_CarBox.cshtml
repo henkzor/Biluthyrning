@@ -12,13 +12,13 @@
     <td>
         @if (Model.FlaggedForCleaning)
         {
-            <button class="btn btn-warning btn-sm" onclick="CleanCar(@Model.Id)">Clean</button>
+            <button class="btn btn-warning btn-sm" onclick="CleanCar(@Model.Id); event.stopPropagation();">Clean</button>
         }
         @if (Model.FlaggedForService)
         {
-            <button class="btn btn-warning btn-sm" onclick="ServiceCar(@Model.Id)">Service</button>
+            <button class="btn btn-warning btn-sm" onclick="ServiceCar(@Model.Id); event.stopPropagation();">Service</button>
         }
-        <button class="btn btn-warning btn-sm" onclick="RemoveCar(@Model.Id)" >Remove Car</button>
+        <button class="btn btn-warning btn-sm" onclick="RemoveCar(@Model.Id); event.stopPropagation();" >Remove Car</button>
     </td>
 
 </tr>

@@ -8,7 +8,6 @@ namespace Biluthyrning.Models.ViewModels.Car
 {
     public class CarIndexVM
     {
-
         public List<CarBoxVM> CarBoxVMList{ get; set; }
 
     }

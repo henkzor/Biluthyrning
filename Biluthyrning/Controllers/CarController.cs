@@ -42,7 +42,8 @@ namespace Biluthyrning.Controllers
         public IActionResult AddCar(CarAddCarVM CACVM)
         {
             service.AddCar(CACVM);
-
+            TempData["Success"] = true;
+            TempData["Message"] = "Car added!";
             return RedirectToAction(nameof(Index));
         }
 

@@ -22,5 +22,7 @@ namespace Biluthyrning.Models.ViewModels.CarRental
 
         [Display(Name = "Mileage at start")]
         public int? MileageBefore { get; set; }
+
+        public bool IsReturned { get; set; }
     }
 }

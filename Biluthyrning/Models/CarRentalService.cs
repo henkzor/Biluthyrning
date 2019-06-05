@@ -278,7 +278,8 @@ namespace Biluthyrning.Models
                     BookingEndTime = o.BookingEnd,
                     BookingStartTime = o.BookingStart,
                     CarRegNr = o.Car.RegnNr,
-                    MileageBefore = o.MileageBeforeKm
+                    MileageBefore = o.MileageBeforeKm,
+                    IsReturned = o.IsReturned
                 }).FirstOrDefault();
         }
     }

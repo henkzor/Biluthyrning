@@ -45,6 +45,7 @@ namespace Biluthyrning.Models
                     Id = id,
                     FirstName = c.FirstName,
                     LastName = c.LastName,
+                    BonusLevel = c.BonusLevel,
                     BookingBoxVMList = context.Bookings
                         .Where(b => b.Customer.Id == id)
                         .Select(b => new BookingBoxVM
