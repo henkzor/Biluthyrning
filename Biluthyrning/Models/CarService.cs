@@ -114,23 +114,6 @@ namespace Biluthyrning.Models
             return CDVM;
         }
 
-        //public List<CarBoxVM> GetCarsByID(List<int> CarIDs)
-        //{
-
-        //    List<CarBoxVM> CarBoxVMList = new List<CarBoxVM>();
-
-        //    CarBoxVMList.AddRange(context.Cars
-        //       .Where(c => CarIDs.Contains(c.Id))
-        //       .Select(c => new CarBoxVM
-        //       {
-        //           Cartype = c.Cartype,
-        //           RegnNr = c.RegnNr,
-        //           MileageKm = c.MileageKm
-        //       }));
-
-        //    return CarBoxVMList;
-        //}
-
         public void CleanCar (CarPerformActionVM CPAVM)
         {
             Cars carToClean = context.Cars

@@ -23,7 +23,7 @@
 
     <div id="CustomerInformationInputDiv" style="background-color: aliceblue" hidden>
         <br />
-
+        <div id="CustomerCheckResultDiv"></div>
         <div class="form-row">
             <div class="form-group col-12 col-sm-6 col-md-4">
                 <label asp-for="FirstName">Customers First Name</label>
@@ -37,12 +37,6 @@
                 <span asp-validation-for="LastName"></span>
             </div>
         </div>
-
-        @*<h6>If registering a new customer, please enter details below</h6>*@
-        @*<div class="form-row"><div class="form-group col-4"><label asp-for="FirstName"></label>
-        <input class="form-control" asp-for="FirstName" /><span asp-validation-for="FirstName"></span>
-        </div><div class="form-group col-4"><label asp-for="LastName"></label><input class="form-control"
-        asp-for="LastName" /><span asp-validation-for="LastName"></span></div></div>*@
     </div>
     <br />
 
@@ -85,7 +79,6 @@
     <script>
 
         window.onload = function () {
-            //document.querySelector("#StartDate").valueAsDateTime = new Date();
             let today = new Date().toISOString().substr(0, 16);
             document.querySelector("#StartDate").value = today;
             document.querySelector("#EndDate").value = today;
@@ -106,8 +99,21 @@
                     console.log("CheckCustomer-anropet fungerade");
                     console.log(result);
 
+                    var html = "";
+                    if (result.customerFound) {
+
+                        html += '<div class="alert alert-success " role="alert">Customer found</div>';
+                    }
+                    else {
+                        html += '<div class="alert alert-warning " role="alert">Customer not found, please enter details</div>';
+
+                    }
+
+                    $("#CustomerCheckResultDiv").html(html)
+
                     $("#firstNameInput").val(result.firstName);
                     $("#lastNameInput").val(result.lastName);
+
 
                     CustomerInformationInputDiv.hidden = false;
                 }
